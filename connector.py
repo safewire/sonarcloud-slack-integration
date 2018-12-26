@@ -7,8 +7,9 @@ from bottle import route, run, request
 
 SLACK_SONAR_WEBHOOK_URL = os.environ["SLACK_SONAR_WEBHOOK_URL"]
 
+
 @route('/sonarqube', method='POST')
-def hello():
+def sonarqube():
     postdata = json.loads(request.body.read())
 
     result = "OK"
@@ -26,3 +27,13 @@ if os.environ.get('APP_LOCATION') == 'heroku':
 else:
     run(host='localhost', port=9090, debug=True)
 
+
+@route('/monitor', method='POST')
+def monitor():
+    return "OK"
+
+
+if os.environ.get('APP_LOCATION') == 'heroku':
+    run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+else:
+    run(host='localhost', port=9090, debug=True)
